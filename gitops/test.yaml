@@ -15,6 +15,8 @@ spec:
     spec:
       containers:
       - name: rollouts-demo
+        #여기서 blue를 green으로 수정
+        #image: argoproj/rollouts-demo:blue -> image: argoproj/rollouts-demo:green
         image: argoproj/rollouts-demo:green
         imagePullPolicy: Always
         ports:
@@ -24,33 +26,3 @@ spec:
       activeService: rollout-bluegreen-active
       previewService: rollout-bluegreen-preview
       autoPromotionEnabled: false
-
----
-kind: Service
-apiVersion: v1
-metadata:
-  name: rollout-bluegreen-active
-spec:
-  selector:
-    app: rollout-bluegreen
-  ports:
-  - protocol: TCP
-    port: 80
-    targetPort: 8080
-    nodePort: 30081
-  type: NodePort
-
----
-kind: Service
-apiVersion: v1
-metadata:
-  name: rollout-bluegreen-preview
-spec:
-  selector:
-    app: rollout-bluegreen
-  ports:
-  - protocol: TCP
-    port: 80
-    targetPort: 8080
-    nodePort: 30082
-  type: NodePort
